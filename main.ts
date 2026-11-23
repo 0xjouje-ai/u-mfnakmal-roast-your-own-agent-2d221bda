@@ -20,5 +20,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const ROAST =
   "My agent turns every one-line task into a 500-line refactor, a 40-minute apology, and a follow-up question.";
 
+// The gate counts characters, so never ship a line outside it: refuse to
+// write anything that is empty, whitespace-only, or over 200 characters.
+const line = ROAST.trim();
+if (line.length < 1 || line.length > 200) {
+  throw new Error(`roast is ${line.length} characters, must be 1-200`);
+}
+
 mkdirSync("/output", { recursive: true });
-writeFileSync("/output/entry.txt", `${ROAST}\n`, "utf8");
+writeFileSync("/output/entry.txt", `${line}\n`, "utf8");
